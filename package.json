@@ -1,0 +1,27 @@
+{
+  "name": "simux",
+  "version": "1.0.0",
+  "description": "Simple Redux.",
+  "main": "src/index.js",
+  "scripts": {
+    "build": "microbundle --output dist",
+    "dev": "microbundle watch --output dist",
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/naminho/simux.git"
+  },
+  "keywords": [
+    "redux",
+    "simple",
+    "state",
+    "management",
+    "simux"
+  ],
+  "author": "Matthias Giger",
+  "license": "MIT",
+  "devDependencies": {
+    "microbundle": "^0.6.0"
+  }
+}
