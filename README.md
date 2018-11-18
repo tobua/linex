@@ -1,3 +1,3 @@
-# simux
+# Lenex
 
-Simple Redux
+Simple State Management

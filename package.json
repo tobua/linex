@@ -1,27 +1,42 @@
 {
-  "name": "simux",
+  "name": "lenex",
   "version": "1.0.0",
-  "description": "Simple Redux.",
-  "main": "src/index.js",
+  "description": "Simple State Management.",
+  "main": "dist/lenex.js",
   "scripts": {
-    "build": "microbundle --output dist",
-    "dev": "microbundle watch --output dist",
-    "test": "jest"
+    "build": "microbundle --output dist --jsx React.createElement",
+    "dev": "microbundle watch --output dist --jsx React.createElement",
+    "test": "jest --watch"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/naminho/simux.git"
+    "url": "git+https://github.com/naminho/lenex.git"
   },
   "keywords": [
     "redux",
     "simple",
     "state",
-    "management",
-    "simux"
+    "management"
   ],
   "author": "Matthias Giger",
   "license": "MIT",
   "devDependencies": {
-    "microbundle": "^0.6.0"
+    "microbundle": "^0.7.0"
+  },
+  "dependencies": {
+    "babel-jest": "^23.6.0",
+    "babel-preset-env": "^1.7.0",
+    "babel-preset-react": "^6.24.1",
+    "clone": "^2.1.2",
+    "immer": "^1.7.4",
+    "invariant": "^2.2.4",
+    "is-object": "^1.0.1",
+    "jest": "^23.6.0",
+    "lodash.get": "^4.4.2",
+    "lodash.has": "^4.5.2",
+    "react": "^16.6.3",
+    "react-dom": "^16.6.3",
+    "react-test-renderer": "^16.6.3",
+    "reselect": "^4.0.0"
   }
 }
