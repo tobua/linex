@@ -1,3 +1,3 @@
-# Lenex
+# Linex
 
 Simple State Management

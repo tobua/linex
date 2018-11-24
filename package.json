@@ -1,16 +1,16 @@
 {
-  "name": "lenex",
+  "name": "linex",
   "version": "1.0.0",
   "description": "Simple State Management.",
-  "main": "dist/lenex.js",
+  "main": "dist/linex.js",
   "scripts": {
+    "start": "microbundle watch --output dist --jsx React.createElement",
     "build": "microbundle --output dist --jsx React.createElement",
-    "dev": "microbundle watch --output dist --jsx React.createElement",
     "test": "jest --watch"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/naminho/lenex.git"
+    "url": "git+https://github.com/naminho/linex.git"
   },
   "keywords": [
     "redux",
