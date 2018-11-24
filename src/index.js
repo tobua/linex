@@ -8,9 +8,9 @@ import initialize from './initialize'
 export const create = (...args) => {
   let { state, methods, selectors, middleware } = initialize(verify(args))
 
-  const update = (newState) => {
-    state = newState
-  }
+  const getState = () => state
+
+  const setState = (newState) => (state = newState)
 
   return new Proxy({}, {
     get(target, name) {
@@ -19,7 +19,7 @@ export const create = (...args) => {
       }
 
       if (has(methods, name)) {
-        return run(methods, state, update, name, middleware)
+        return run(methods, getState, setState, name, middleware)
       }
 
       if (has(selectors, name)) {

@@ -1,5 +1,5 @@
 import { create } from './..'
-import delay from './util/async'
+import delay from './utils/async'
 
 test('Can init an empty store.', () => {
   const store = create({

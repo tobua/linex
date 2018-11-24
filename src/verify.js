@@ -1,11 +1,8 @@
 import invariant from 'invariant'
 import has from 'lodash.has'
 import isObject from 'is-object'
-import clone from 'clone'
 
 export default (args) => {
-  // Copy inputs to avoid modifying the original.
-  args = clone(args)
   // TODO warn if keys aren't unique.
   invariant(args.length === 1, 'At least one argument needs to be passed.')
   invariant(typeof args[0] === 'object', 'An object needs to be passed as the first argument.')

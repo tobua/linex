@@ -14,7 +14,8 @@ export default (selectors, state) => {
 
     invariant(typeof calculation === 'function', 'Last property of a selector must be a function.')
 
-    const args = selector.splice(0, selector.length - 1)
+    // Slice first to avoid modifying the original.
+    const args = selector.slice().splice(0, selector.length - 1)
 
     result[selectorKey] = createSelector(...args, calculation)
   })

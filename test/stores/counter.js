@@ -1,6 +1,6 @@
 export default {
   state: {
-    count: 6
+    count: 0
   },
   methods: {
     increment: (state, value = 7) => {

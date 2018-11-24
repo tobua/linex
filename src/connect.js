@@ -2,27 +2,29 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 
 export default (mapToProps, WrappedComponent) => {
-  console.log(mapToProps, WrappedComponent)
-  const Hello = class extends Component {
+  const ContextComponent = class extends Component {
     constructor(props, context) {
       super(props, context)
 
-      console.log('connect store', context.store)
+      const store = context.store
+
+      this.store = mapToProps(store)
     }
 
     render() {
       return (
         <WrappedComponent
           {...this.props}
+          {...this.store}
           {...mapToProps}
         />
       )
     }
   }
 
-  Hello.contextTypes = {
+  ContextComponent.contextTypes = {
     store: PropTypes.object
   }
 
-  return Hello
+  return ContextComponent
 }

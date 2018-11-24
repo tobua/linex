@@ -75,7 +75,7 @@ test('A selector be recalculated on state changes.', () => {
       count: 7
     },
     methods: {
-      increment: (value, state) => {
+      increment: (state, value) => {
         state.count++
       }
     },
