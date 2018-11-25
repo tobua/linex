@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
+import isEqual from 'react-fast-compare'
 
 export default (mapToProps, WrappedComponent) => {
   const ContextComponent = class extends Component {
@@ -8,9 +9,13 @@ export default (mapToProps, WrappedComponent) => {
 
       const store = context.store
 
-      store.subscribe(this.setState.bind(this))
+      store.subscribe(state => this.setState(mapToProps(state)))
 
       this.state = mapToProps(store)
+    }
+
+    shouldComponentUpdate(nextProps, nextState) {
+      return !isEqual(this.state, nextState) || !isEqual(this.props, nextProps)
     }
 
     render() {

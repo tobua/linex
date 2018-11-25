@@ -3,9 +3,10 @@ import renderBasicComponent from './utils/render-basic-component'
 import getRenderProp from './utils/get-render-prop'
 
 beforeEach(() => {
-  // Hide missing prop warnings.
+  // Hide logs from test console.
   console.error = () => {}
   console.warn = () => {}
+  console.log = () => {}
 })
 
 test('The component will rerender when the state changes.', () => {

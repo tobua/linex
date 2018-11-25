@@ -4,15 +4,11 @@ import { counter } from './../../stores'
 import createBasicComponent from './../components/BasicComponent'
 import renderApp from './render-app'
 
-export default () => {
+export default (mapToProps = state => ({ count: state.count })) => {
   const store = create(counter)
   const BasicComponent = createBasicComponent()
   const Component = BasicComponent.Component
   const renderMock = BasicComponent.renderMock
-
-  const mapToProps = (state) => ({
-    count: state.count
-  })
 
   const ConnectedComponent = connect(mapToProps, Component)
 

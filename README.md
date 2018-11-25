@@ -17,7 +17,7 @@ npm i linex
 * Middleware
 * React Integration with Provider and connect
 
-## Usage
+## Standalone Usage
 
 ```
 import { create } from 'linex'
@@ -35,8 +35,17 @@ const store = create({
     incrementAsync(state, value, rootState, delay) => {
       setTimeout(() => delay(state => {
         state.count = state.count + 2
+        done(state.count)
       }))
     }
+    asyncInc: (state, value, rootState, delay) => {
+      setTimeout(() => {
+        delay((state, done, fail) => {
+          state.count = state.count + 5
+          done(state.count)
+        })
+      }, 1000)
+    },
   },
   // Define selectors to get values derived from the state
   selectors: {
@@ -46,6 +55,22 @@ const store = create({
     ]
   }
 })
+
+store.count                                     // store.count: 0
+store.increment()                               // store.count: 1
+const { value } = await store.incrementAsync()  // store.count: 3, value: 2
+const memoizedValue = store.double              // memoizedValue: 6
+const { value, error } = await store.asyncInc() // store.count: 8, value: 8
+```
+
+## Usage with React
+
+Comes with built-in helpers for React integration.
+
+```
+import React from 'react'
+
+// TODO
 ```
 
 ## Development

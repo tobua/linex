@@ -36,6 +36,7 @@
     "lodash.has": "^4.5.2",
     "react": "^16.6.3",
     "react-dom": "^16.6.3",
+    "react-fast-compare": "^2.0.4",
     "react-test-renderer": "^16.6.3",
     "reselect": "^4.0.0"
   }
