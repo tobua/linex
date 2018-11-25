@@ -8,9 +8,14 @@ beforeEach(() => {
   console.warn = () => {}
 })
 
-test('A component can be connected and will receive the props.', () => {
+test('The component will rerender when the state changes.', () => {
   const { renderMock, store } = renderBasicComponent()
 
-  expect(renderMock.mock.calls.length).toBe(1)
+  // First call, count prop value.
+  expect(getRenderProp(renderMock, 0)).toBe(0)
+
+  store.increment()
+
+  // Second call, count prop value should have increased.
   expect(getRenderProp(renderMock, 0)).toBe(0)
 })

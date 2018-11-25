@@ -8,6 +8,15 @@ Refined State Management, pronounced as /ˈlɪnəks/.
 npm i linex
 ```
 
+## Features
+
+* Methods (Actions)
+* Effortless Immutability
+* Async Methods
+* Selectors
+* Middleware
+* React Integration with Provider and connect
+
 ## Usage
 
 ```

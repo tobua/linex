@@ -1,5 +1,10 @@
 import { create } from './..'
 
+beforeEach(() => {
+  // Hide warnings.
+  console.warn = () => {}
+})
+
 test('Middleware isn\'t accessible on the store.', () => {
   const spy = jest.spyOn(global.console, 'warn')
   const store = create({

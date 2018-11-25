@@ -7,7 +7,7 @@ export default () => {
     render() {
       const { count } = this.props
 
-      renderMock(count)
+      renderMock(this.props)
 
       return (
         <p>{count}</p>
