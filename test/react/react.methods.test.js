@@ -17,5 +17,5 @@ test('The component will rerender when the state changes.', () => {
   store.increment()
 
   // Second call, count prop value should have increased.
-  expect(getRenderProp(renderMock, 0)).toBe(0)
+  expect(getRenderProp(renderMock, 1)).toBe(7)
 })

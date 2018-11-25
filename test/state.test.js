@@ -14,6 +14,7 @@ test('Can read a property from the state.', () => {
       count: 6
     }
   })
+
   expect(store.count).toEqual(6)
 })
 

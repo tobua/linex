@@ -8,14 +8,16 @@ export default (mapToProps, WrappedComponent) => {
 
       const store = context.store
 
-      this.store = mapToProps(store)
+      store.subscribe(this.setState.bind(this))
+
+      this.state = mapToProps(store)
     }
 
     render() {
       return (
         <WrappedComponent
           {...this.props}
-          {...this.store}
+          {...this.state}
           {...mapToProps}
         />
       )
