@@ -69,8 +69,30 @@ Comes with built-in helpers for React integration.
 
 ```
 import React from 'react'
+import ReactDOM from 'react-dom'
+import { create, connect, Provider } from 'inex'
 
-// TODO
+const store = create({
+  state: {
+    count: 0
+  }
+})
+
+function BasicComponent({ count }) {
+  return <p>{count}</p>
+}
+
+const ConnectedBasicComponent = connect(store => ({
+  count: store.count
+}), BasicComponent)
+
+const AppWithProvider = () => (
+  <Provider store={store}>
+    <ConnectedBasicComponent />
+  </Provider>
+)
+
+ReactDOM.render(<AppWithProvider />, document.getElementById('root'))
 ```
 
 ## Development
