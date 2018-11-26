@@ -6,7 +6,14 @@ import verify from './verify'
 import initialize from './initialize'
 
 export const create = (...args) => {
-  let { state, methods, selectors, middleware } = initialize(verify(args))
+  let {
+    state,
+    methods,
+    selectors,
+    middleware,
+    root,
+    store
+  } = initialize(verify(args))
 
   // Subscribers will be called when the state updates.
   const subscribers = []
@@ -14,15 +21,24 @@ export const create = (...args) => {
   const getState = () => state
 
   const setState = newState => {
-    // Inform subscribers about the state change.
-    subscribers.forEach(subscriber => subscriber(newState))
     state = newState
+    // Inform subscribers about the state change.
+    subscribers.forEach(subscriber => subscriber(store))
   }
 
-  return new Proxy({}, {
+  store = new Proxy({}, {
     get(target, name) {
       if (name === 'subscribe') {
         return value => subscribers.push(value)
+      }
+
+      if (name === '__rootStore') {
+        return rootStore => root = rootStore
+      }
+
+      if (name === 'hasOwnProperty') {
+        // Needed to check whether __rootStore is available.
+        return () => true
       }
 
       if (has(state, name)) {
@@ -45,4 +61,6 @@ export const create = (...args) => {
       return true
     }
   })
+
+  return store
 }

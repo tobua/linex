@@ -1,21 +1,56 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import App from './App'
 import './index.css'
 
-import simux, { Provider } from 'simux'
+import { create, connect, Provider } from './linex'
 
-console.log(simux)
-
-const store = simux.default({
-  state: {},
-  methods: {},
-  selectors: {}
+const store = create({
+  state: {
+    count: 0,
+    secondCount: 0
+  },
+  methods: {
+    increment: (state) => {
+      state.count = state.count + 1
+    },
+    incrementSecond: (state) => {
+      state.secondCount = state.secondCount + 2
+    }
+  }
 })
+
+class BasicComponent extends React.Component {
+  render() {
+    const { id, count, increment } = this.props
+
+    return (
+      <p>{id}: {count} <button onClick={increment}>Increment</button></p>
+    )
+  }
+}
+
+const ConnectedBasicComponent = connect(store => {
+  return {
+    count: store.count,
+    increment: () => store.increment()
+  }
+}, BasicComponent)
+
+const AnotherConnectedBasicComponent = connect(store => {
+  return {
+    count: store.secondCount,
+    increment: () => store.incrementSecond()
+  }
+}, BasicComponent)
 
 const AppWithProvider = () => (
   <Provider store={store}>
-    <App />
+    <div>
+      <h1>Linex Example React App</h1>
+      <ConnectedBasicComponent id='Connected to count' />
+      <AnotherConnectedBasicComponent id='Connected to secondCount' />
+      <ConnectedBasicComponent id='Connected to count' />
+    </div>
   </Provider>
 )
 

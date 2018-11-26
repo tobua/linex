@@ -9,7 +9,7 @@ export default (mapToProps, WrappedComponent) => {
 
       const store = context.store
 
-      store.subscribe(state => this.setState(mapToProps(state)))
+      store.subscribe(store => this.setState(mapToProps(store)))
 
       this.state = mapToProps(store)
     }
