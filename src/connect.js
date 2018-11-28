@@ -29,5 +29,9 @@ export default (mapToProps, WrappedComponent) => {
     store: PropTypes.object
   }
 
+  const name = WrappedComponent.displayName || WrappedComponent.name
+
+  ContextComponent.displayName = `Connected${name}`
+
   return ContextComponent
 }

@@ -1,6 +1,6 @@
 {
   "name": "linex",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "Simple State Management.",
   "main": "dist/linex.js",
   "scripts": {

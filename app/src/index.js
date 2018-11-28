@@ -29,6 +29,8 @@ class BasicComponent extends React.Component {
   }
 }
 
+BasicComponent.displayName = 'BasicComponent'
+
 const ConnectedBasicComponent = connect(store => {
   return {
     count: store.count,
@@ -53,5 +55,7 @@ const AppWithProvider = () => (
     </div>
   </Provider>
 )
+
+AppWithProvider.displayName = 'AppWithProvider'
 
 ReactDOM.render(<AppWithProvider />, document.getElementById('root'))

@@ -61,6 +61,15 @@ export const create = (...args) => {
           return () => selectors[name](state)
         }
 
+        // Needed for React Dev Tools
+        if (name === '@@toStringTag') {
+          return 'Linex Store'
+        }
+
+        if (name === '_reactFragment') {
+          return {}
+        }
+
         console.warn(`The property ${name} does not exist on the store.`)
       },
       set: (target, name, value) => {
