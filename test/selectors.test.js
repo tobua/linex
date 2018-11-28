@@ -13,7 +13,7 @@ test('A selector will be created.', () => {
     }
   })
 
-  expect(store.total).toEqual(18)
+  expect(store.total()).toEqual(18)
 })
 
 test('Selector will return the correct value.', () => {
@@ -44,7 +44,7 @@ test('Selector will return the correct value.', () => {
     }
   })
 
-  expect(store.total).toEqual(18)
+  expect(store.total()).toEqual(18)
 })
 
 test('A selector will only be calculated once if no parameter changes occur.', () => {
@@ -62,9 +62,9 @@ test('A selector will only be calculated once if no parameter changes occur.', (
   })
 
   expect(mockSelector.mock.calls.length).toEqual(0)
-  store.double
+  store.double()
   expect(mockSelector.mock.calls.length).toEqual(1)
-  store.double
+  store.double()
   expect(mockSelector.mock.calls.length).toEqual(1)
 })
 
@@ -88,9 +88,9 @@ test('A selector be recalculated on state changes.', () => {
   })
 
   expect(mockSelector.mock.calls.length).toEqual(0)
-  store.double
+  store.double()
   expect(mockSelector.mock.calls.length).toEqual(1)
   store.increment()
-  store.double
+  store.double()
   expect(mockSelector.mock.calls.length).toEqual(2)
 })

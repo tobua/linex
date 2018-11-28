@@ -4,7 +4,8 @@ import { counter } from './../../stores'
 import createBasicComponent from './../components/BasicComponent'
 import renderApp from './render-app'
 
-export default (mapToProps = state => ({ count: state.count })) => {
+export default (mapToProps = state => ({ count: state.count }), fallback) => {
+  counter.fallback = fallback
   const store = create(counter)
   const BasicComponent = createBasicComponent()
   const Component = BasicComponent.Component

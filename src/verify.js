@@ -27,10 +27,15 @@ export default (args) => {
 
   invariant(isObject(middleware), 'middleware needs to be an object.')
 
+  const fallback = input.fallback || typeof Proxy === 'undefined' || false
+
+  invariant(typeof fallback === 'boolean', 'fallback should be a boolean value.')
+
   return {
     state,
     methods,
     selectors,
-    middleware
+    middleware,
+    fallback
   }
 }

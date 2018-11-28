@@ -1,5 +1,6 @@
 import produce from 'immer'
 import has from 'lodash.has'
+import PromisePolyfill from './utils/promise'
 
 export default (methods, getState, setState, key, middleware) => {
   return (value) => {
@@ -8,6 +9,8 @@ export default (methods, getState, setState, key, middleware) => {
     Object.keys(middleware).forEach(
       middlewareKey => middleware[middlewareKey](key)
     )
+
+    const Promise = PromisePolyfill()
 
     const promise = new Promise((resolve, reject) => {
       done = resolve

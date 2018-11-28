@@ -15,6 +15,8 @@ npm i linex
 * Async Methods
 * Selectors
 * Middleware
+* IE11 Support
+* Only 3.9 Kb
 * React Integration with Provider and connect
 
 ## Standalone Usage
