@@ -32,20 +32,14 @@ const store = create({
     increment: (state, value) => {
       state.count++
     },
-    incrementAsync(state, value, rootState, delay) => {
-      setTimeout(() => delay(state => {
-        state.count = state.count + 2
-        done(state.count)
-      }))
-    }
-    asyncInc: (state, value, rootState, delay) => {
+    asyncIncrement: (state, value, rootState, delay) => {
       setTimeout(() => {
         delay((state, done, fail) => {
           state.count = state.count + 5
           done(state.count)
         })
       }, 1000)
-    },
+    }
   },
   // Define selectors to get values derived from the state
   selectors: {
@@ -58,9 +52,8 @@ const store = create({
 
 store.count                                     // store.count: 0
 store.increment()                               // store.count: 1
-const { value } = await store.incrementAsync()  // store.count: 3, value: 2
-const memoizedValue = store.double              // memoizedValue: 6
-const { value, error } = await store.asyncInc() // store.count: 8, value: 8
+const { value } = await store.asyncIncrement()  // store.count: 6, value: 6
+const memoizedValue = store.double()            // memoizedValue: 12
 ```
 
 ## Usage with React
@@ -70,7 +63,7 @@ Comes with built-in helpers for React integration.
 ```
 import React from 'react'
 import ReactDOM from 'react-dom'
-import { create, connect, Provider } from 'inex'
+import { create, connect, Provider } from 'linex'
 
 const store = create({
   state: {
