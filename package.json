@@ -21,7 +21,8 @@
   "author": "Matthias Giger",
   "license": "MIT",
   "devDependencies": {
-    "microbundle": "^0.7.0"
+    "microbundle": "^0.7.0",
+    "node-fetch": "^2.3.0"
   },
   "dependencies": {
     "babel-jest": "^23.6.0",

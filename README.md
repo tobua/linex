@@ -90,6 +90,52 @@ const AppWithProvider = () => (
 ReactDOM.render(<AppWithProvider />, document.getElementById('root'))
 ```
 
+## Async Methods
+
+The following example illustrates how external data can be loaded with async
+methods.
+
+```
+import wretch from 'wretch'
+
+const store = create({
+  state: {
+    isLoadingTemperature: false,
+    isErrorTemperature: false,
+    weather: null
+  },
+  methods: {
+    loadWeather: (state, value, rootState, delay) => {
+      state.isLoadingTemperature = true
+
+      // Load weather data for Zurich, Switzerland.
+      wretch('https://www.metaweather.com/api/location/784794')
+        .get()
+        .json(json => {
+          delay((state, done, fail) => {
+            if (json.consolidated_weather) {
+              state.isLoading = false
+              state.isError = true
+              fail()
+            } else {
+              state.isLoading = false
+              state.isError = false
+              state.weather = json.consolidated_weather[0].weather_state_name
+              done(state.weather)
+            }
+
+
+          })
+        })
+    }
+  }
+})
+
+await store.loadWeather()
+
+store.weather => Sun, maybe
+```
+
 ## Development
 
 ```
