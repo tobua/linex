@@ -3,17 +3,25 @@ import has from 'lodash.has'
 import isObject from 'is-object'
 
 export default (args) => {
-  // TODO warn if keys aren't unique.
-  invariant(args.length === 1, 'At least one argument needs to be passed.')
+  // TODO warn if keys aren't unique in DEV mode.
+  invariant(args.length >= 1, 'At least one argument needs to be passed.')
   invariant(typeof args[0] === 'object', 'An object needs to be passed as the first argument.')
 
   const input = args[0]
+  const root = args[1]
 
-  invariant(has(input, 'state'), 'A state property is required on the first argument.')
+  invariant(
+    has(input, 'state') || has(input, 'hooks'),
+    'A state or hooks property is required on the first argument.'
+  )
 
-  const state = input.state
+  const state = input.state || {}
 
   invariant(isObject(state), 'state needs to be an object.')
+
+  const hooks = input.hooks || {}
+
+  invariant(isObject(hooks), 'hooks needs to be an object.')
 
   const methods = input.methods || {}
 
@@ -33,9 +41,11 @@ export default (args) => {
 
   return {
     state,
+    hooks,
     methods,
     selectors,
     middleware,
+    root,
     fallback
   }
 }

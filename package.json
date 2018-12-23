@@ -1,18 +1,19 @@
 {
   "name": "linex",
-  "version": "1.1.1",
-  "description": "Simple State Management.",
+  "version": "1.2.1",
+  "description": "Refined State Management.",
   "main": "dist/linex.js",
   "scripts": {
-    "start": "microbundle watch --output dist --jsx React.createElement",
+    "start": "microbundle watch --no-compress --output dist --jsx React.createElement",
     "build": "microbundle --output dist --jsx React.createElement",
-    "test": "jest --watchAll"
+    "test": "jest --watchAll test/proxy.test.js"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/naminho/linex.git"
   },
   "keywords": [
+    "immer",
     "redux",
     "simple",
     "state",
@@ -20,28 +21,30 @@
   ],
   "author": "Matthias Giger",
   "license": "MIT",
-  "devDependencies": {
-    "microbundle": "^0.7.0",
-    "node-fetch": "^2.3.0"
-  },
   "dependencies": {
-    "babel-jest": "^23.6.0",
     "babel-preset-env": "^1.7.0",
     "babel-preset-react": "^6.24.1",
-    "clone": "^2.1.2",
     "es6-promise": "^4.2.5",
     "immer": "^1.7.4",
     "invariant": "^2.2.4",
     "is-object": "^1.0.1",
-    "jest": "^23.6.0",
     "lodash.get": "^4.4.2",
     "lodash.has": "^4.5.2",
     "object-assign": "^4.1.1",
     "proxy-polyfill": "^0.3.0",
-    "react": "^16.6.3",
-    "react-dom": "^16.6.3",
     "react-fast-compare": "^2.0.4",
-    "react-test-renderer": "^16.6.3",
+    "remove-array-item": "^1.1.1",
     "reselect": "^4.0.0"
+  },
+  "peerDependencies": {
+    "react": "^16.6.1",
+    "react-dom": "^16.6.3"
+  },
+  "devDependencies": {
+    "babel-jest": "^23.6.0",
+    "jest": "^23.6.0",
+    "microbundle": "^0.7.0",
+    "node-fetch": "^2.3.0",
+    "react-test-renderer": "^16.7.0-alpha.2"
   }
 }

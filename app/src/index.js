@@ -1,13 +1,18 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
+import weather from './stores/weather'
+import Weather from './components/Weather'
 import './index.css'
 
 import { create, connect, Provider } from './linex'
 
-const store = create({
+let store = () => store
+
+store = create({
   state: {
     count: 0,
-    secondCount: 0
+    secondCount: 0,
+    weather: create(weather, store)
   },
   methods: {
     increment: (state) => {
@@ -45,6 +50,10 @@ const AnotherConnectedBasicComponent = connect(store => {
   }
 }, BasicComponent)
 
+const ConnectedWeather = connect(store => ({
+  weather: store.weather
+}), Weather)
+
 const AppWithProvider = () => (
   <Provider store={store}>
     <div>
@@ -52,6 +61,7 @@ const AppWithProvider = () => (
       <ConnectedBasicComponent id='Connected to count' />
       <AnotherConnectedBasicComponent id='Connected to secondCount' />
       <ConnectedBasicComponent id='Connected to count' />
+      <ConnectedWeather />
     </div>
   </Provider>
 )

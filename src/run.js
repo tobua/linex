@@ -2,12 +2,12 @@ import produce from 'immer'
 import has from 'lodash.has'
 import PromisePolyfill from './utils/promise'
 
-export default (methods, getState, setState, key, middleware) => {
+export default (app, name) => {
   return (value) => {
     let done, fail
 
-    Object.keys(middleware).forEach(
-      middlewareKey => middleware[middlewareKey](key)
+    Object.keys(app.middleware).forEach(
+      middlewareKey => app.middleware[middlewareKey](name)
     )
 
     const Promise = PromisePolyfill()
@@ -17,8 +17,8 @@ export default (methods, getState, setState, key, middleware) => {
       fail = reject
     })
 
-    const delay = method => setState(
-      produce(getState(), draft => method(
+    const delay = method => app.setState(
+      produce(app.getState(), draft => method(
         draft,
         (value) => done({
           value
@@ -29,10 +29,11 @@ export default (methods, getState, setState, key, middleware) => {
       ))
     )
 
-    setState(
+    app.setState(
       produce(
-        getState(),
-        draft => methods[key](draft, value, {}, delay)
+        app.getState(),
+        draft => app.methods[name](
+          draft, value, Object.freeze(app.root()), delay)
       )
     )
 

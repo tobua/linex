@@ -1,7 +1,7 @@
-import { Component, Children } from 'react'
+import React from 'react'
 import PropTypes from 'prop-types'
 
-export default class Provider extends Component {
+export default class Provider extends React.Component {
   getChildContext() {
     return {
       store: this.store
@@ -14,7 +14,7 @@ export default class Provider extends Component {
   }
 
   render() {
-    return Children.only(this.props.children)
+    return React.Children.only(this.props.children)
   }
 }
 

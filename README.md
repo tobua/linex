@@ -100,13 +100,13 @@ import wretch from 'wretch'
 
 const store = create({
   state: {
-    isLoadingTemperature: false,
-    isErrorTemperature: false,
+    isLoadingWeather: false,
+    isErrorWeather: false,
     weather: null
   },
   methods: {
     loadWeather: (state, value, rootState, delay) => {
-      state.isLoadingTemperature = true
+      state.isLoadingWeather = true
 
       // Load weather data for Zurich, Switzerland.
       wretch('https://www.metaweather.com/api/location/784794')
@@ -114,17 +114,15 @@ const store = create({
         .json(json => {
           delay((state, done, fail) => {
             if (json.consolidated_weather) {
-              state.isLoading = false
-              state.isError = true
+              state.isLoadingWeather = false
+              state.isErrorWeather = true
               fail()
             } else {
-              state.isLoading = false
-              state.isError = false
+              state.isLoadingWeather = false
+              state.isErrorWeather = false
               state.weather = json.consolidated_weather[0].weather_state_name
               done(state.weather)
             }
-
-
           })
         })
     }
@@ -133,7 +131,30 @@ const store = create({
 
 await store.loadWeather()
 
-store.weather => Sun, maybe
+store.weather => Sun, hopefully ;)
+```
+
+## Nested Stores
+
+It's possible to split up sub-parts of the state into separate stores. To do
+this first declare a reference to the root store and pass it to each nested
+store.
+
+```
+let store = () => store
+
+store = create({
+  state: {
+    count: 0,
+    nested: create({
+      state: {
+        count: 1
+      }
+    }, store) // <- Reference the root store when creating a nested store.
+  }
+})
+
+store.nested.count == 1
 ```
 
 ## Development
