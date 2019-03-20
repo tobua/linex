@@ -1,0 +1,9 @@
+*/dist
+!rollup/dist
+rollup/dist/bundle.js
+*/.cache
+*/src
+*/*.tgz
+*/build
+*/public
+!cra/public

@@ -1,37 +1,34 @@
 import React from 'react'
-import { create } from './../..'
+import run from './../utils/run'
 import { counter } from './../stores'
-import createBasicComponent from './components/BasicComponent'
+import createRegularComponent from './components/RegularComponent'
 import renderApp from './utils/render-app'
 
 beforeEach(() => {
   // Hide missing prop warnings.
   console.error = () => {}
+  // Hide warnings.
   console.warn = () => {}
+  // Hide plugins.
+  console.log = () => {}
 })
 
 test('App with an empty store will render.', () => {
-  renderApp(undefined, <p>Hello</p>)
+  renderApp(<p>Hello</p>)
 })
 
 test('App with an empty store and a component will render the component once.', () => {
-  const BasicComponent = createBasicComponent()
-  const Component = BasicComponent.Component
-  const renderMock = BasicComponent.renderMock
+  const RegularComponent = createRegularComponent()
+  const Component = RegularComponent.Component
+  const renderMock = RegularComponent.renderMock
 
-  renderApp(undefined, <Component />)
+  renderApp(<Component />)
 
   expect(renderMock.mock.calls.length).toBe(1)
 })
 
-test('App with a store will render.', () => {
-  const store = create(counter)
+run('App with a store will render', (fallback, create) => {
+  const store = create(counter(create))
 
-  renderApp(store, <p>Hello</p>)
-})
-
-test('App with a store will render the component.', () => {
-  const store = create(counter)
-
-  renderApp(store, <p>Hello</p>)
+  renderApp(<p>Hello</p>)
 })

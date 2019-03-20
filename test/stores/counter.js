@@ -1,30 +1,24 @@
-import { create, connect } from './../..'
-
-export default {
+export default create => ({
   state: {
     count: 0,
     secondCount: 0,
     deep: {
       count: 0
     },
-    substore: create({
+    anotherStore: create({
       state: {
         count: 0
       },
-      methods: {
+      update: {
         increment: state => {
           state.count++
         }
       }
     })
   },
-  methods: {
-    increment: (state, value = 7) => {
+  update: {
+    increment: (state, store, value = 7) => {
       state.count = state.count + value
-    },
-    incrementDelayed: async (state, value, run) => {
-      await delay()
-      run('increment', 6)
     },
     incrementSecond: state => {
       state.secondCount++
@@ -33,15 +27,15 @@ export default {
       state.deep.count++
     }
   },
-  selectors: {
+  read: {
     doubleCount: [
-      state => state.count,
+      state => [state.count],
       count => (count * 2)
     ]
   },
-  middleware: {
+  plugin: {
     log: (state, type, action) => {
       console.log('log: ', type, action)
     }
   }
-}
+})

@@ -1,0 +1,24 @@
+{
+  "name": "linex-stores-demo-cra",
+  "scripts": {
+    "start": "npm run copy:src && react-scripts start",
+    "build": "npm run copy:src && react-scripts build",
+    "copy:src": "cp -a ../src ."
+  },
+  "dependencies": {
+    "@babel/polyfill": "^7.2.5",
+    "linex": "^2.0.0",
+    "linex-stores": "^1.0.0",
+    "react-dom": "^16.8.4",
+    "react-scripts": "2.1.8"
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not ie <= 11",
+    "not op_mini all"
+  ]
+}

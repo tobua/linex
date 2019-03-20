@@ -1,0 +1,16 @@
+{
+  "name": "linex-demo-jetpack",
+  "scripts": {
+    "start": "npm run copy:src && jetpack",
+    "build": "npm run copy:src && jetpack build",
+    "copy:src": "cp -a ../src ."
+  },
+  "dependencies": {
+    "@babel/polyfill": "^7.4.0",
+    "jetpack": "^0.14.0",
+    "linex": "^2.0.0",
+    "react-dom": "^16.8.4",
+    "whatwg-fetch": "^3.0.0",
+    "wretch": "^1.5.1"
+  }
+}

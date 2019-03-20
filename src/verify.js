@@ -1,51 +1,50 @@
 import invariant from 'invariant'
-import has from 'lodash.has'
 import isObject from 'is-object'
+import invariants from './constants/invariants'
+import unique from './utils/unique'
 
 export default (args) => {
-  // TODO warn if keys aren't unique in DEV mode.
-  invariant(args.length >= 1, 'At least one argument needs to be passed.')
-  invariant(typeof args[0] === 'object', 'An object needs to be passed as the first argument.')
+  if (process.env.NODE_ENV !== 'production') {
+    invariant(args.length >= 1, invariants.oneArgumentMinimum)
+    invariant(typeof args[0] === 'object', invariants.firstObject)
+  }
 
-  const input = args[0]
-  const root = args[1]
+  const input = args[0] || { state: {} }
+  const options = args[1] || {}
 
-  invariant(
-    has(input, 'state') || has(input, 'hooks'),
-    'A state or hooks property is required on the first argument.'
-  )
+  if (process.env.NODE_ENV !== 'production') {
+    invariant(typeof input.state !== 'undefined', invariants.stateRequired)
+  }
 
   const state = input.state || {}
 
-  invariant(isObject(state), 'state needs to be an object.')
+  const update = input.update || {}
 
-  const hooks = input.hooks || {}
+  const read = input.read || {}
 
-  invariant(isObject(hooks), 'hooks needs to be an object.')
+  const plugin = input.plugin || {}
 
-  const methods = input.methods || {}
+  if (typeof Proxy === 'undefined') {
+    options.fallback = true
+  }
 
-  invariant(isObject(methods), 'methods needs to be an object.')
-
-  const selectors = input.selectors || {}
-
-  invariant(isObject(selectors), 'selectors needs to be an object.')
-
-  const middleware = input.middleware || {}
-
-  invariant(isObject(middleware), 'middleware needs to be an object.')
-
-  const fallback = input.fallback || typeof Proxy === 'undefined' || false
-
-  invariant(typeof fallback === 'boolean', 'fallback should be a boolean value.')
+  if (process.env.NODE_ENV !== 'production') {
+    invariant(isObject(state), invariants.stateObject)
+    invariant(isObject(update), invariants.updateObject)
+    invariant(isObject(read), invariants.readObject)
+    invariant(isObject(plugin), invariants.pluginObject)
+    invariant(
+      typeof options.fallback === 'undefined' ||
+      typeof options.fallback === 'boolean', invariants.fallbackBoolean)
+    // Properties should be unique.
+    unique(state, read, update)
+  }
 
   return {
     state,
-    hooks,
-    methods,
-    selectors,
-    middleware,
-    root,
-    fallback
+    update,
+    read,
+    plugin,
+    options
   }
 }

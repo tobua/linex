@@ -10,18 +10,19 @@ npm i linex
 
 ## Features
 
-* Methods (Actions)
+* Read State (Selectors)
+* Update State (Actions)
 * Effortless Immutability
-* Async Methods
-* Selectors
-* Middleware
+* Async Side-Effects
+* Memoized Reads
+* Plugins (Middleware)
+* React Integration
 * IE11 Support
-* Only 3.9 Kb
-* React Integration with Provider and connect
+* [Reusable Stores](https://github.com/naminho/linex/tree/master/stores)
 
 ## Standalone Usage
 
-```
+```js
 import { create } from 'linex'
 
 const store = create({
@@ -29,137 +30,94 @@ const store = create({
   state: {
     count: 0
   },
-  // Methods are used to update the state.
-  methods: {
-    increment: (state, value) => {
-      state.count++
-    },
-    asyncIncrement: (state, value, rootState, delay) => {
-      setTimeout(() => {
-        delay((state, done, fail) => {
-          state.count = state.count + 5
-          done(state.count)
-        })
-      }, 1000)
+  // Used to update the state.
+  update: {
+    increment: state => ++state.count,
+    incrementBy: (state, store, value) => state.count += value,
+    incrementDelayed: (state, store) => {
+      return store.later((done) => {
+        setTimeout(() => done(store.increment()), 1000)
+      })
     }
   },
-  // Define selectors to get values derived from the state
-  selectors: {
-    double: [
+  // Methods to get values derived from the state.
+  read: {
+    double: state => state.count * 2,
+    doubleMemoized: [
       state => state.count,
       count => count * 2
     ]
   }
 })
 
-store.count                                     // store.count: 0
-store.increment()                               // store.count: 1
-const { value } = await store.asyncIncrement()  // store.count: 6, value: 6
-const memoizedValue = store.double()            // memoizedValue: 12
+// State
+store.count                                          // => 0, store.count: 0
+// Update
+store.increment()                                    // => 1, store.count: 1
+store.incrementBy(2)                                 // => 3, store.count: 3
+// Read
+store.double()                                       // => 6
+// Memoized Read, only called once if props stay the same.
+store.doubleMemoized()                               // => 6
+store.doubleMemoized()                               // => 6, but from cache.
+// Async Update
+const { value } = await store.incrementDelayed()     // store.count: 4, value: 4
 ```
 
 ## Usage with React
 
 Comes with built-in helpers for React integration.
 
-```
+```js
 import React from 'react'
-import ReactDOM from 'react-dom'
-import { create, connect, Provider } from 'linex'
+import { render } from 'react-dom'
+import { create, Component } from 'linex'
 
 const store = create({
-  state: {
-    count: 0
+  state: { count: 0 },
+  update: {
+    increment: state => ++state.count
   }
 })
 
-function BasicComponent({ count }) {
-  return <p>{count}</p>
+class DisplayCount extends Component {
+  render() {
+    const { count, increment } = this.state
+
+    return (
+      <div>
+        <p>{count}</p>
+        <button onClick={() => increment()}>Increment</button>
+      </div>
+    )
+  }
 }
 
-const ConnectedBasicComponent = connect(store => ({
-  count: store.count
-}), BasicComponent)
+const mapStore = store => ({ count: store.count, increment: store.increment })
 
-const AppWithProvider = () => (
-  <Provider store={store}>
-    <ConnectedBasicComponent />
-  </Provider>
-)
-
-ReactDOM.render(<AppWithProvider />, document.getElementById('root'))
-```
-
-## Async Methods
-
-The following example illustrates how external data can be loaded with async
-methods.
-
-```
-import wretch from 'wretch'
-
-const store = create({
-  state: {
-    isLoadingWeather: false,
-    isErrorWeather: false,
-    weather: null
-  },
-  methods: {
-    loadWeather: (state, value, rootState, delay) => {
-      state.isLoadingWeather = true
-
-      // Load weather data for Zurich, Switzerland.
-      wretch('https://www.metaweather.com/api/location/784794')
-        .get()
-        .json(json => {
-          delay((state, done, fail) => {
-            if (json.consolidated_weather) {
-              state.isLoadingWeather = false
-              state.isErrorWeather = true
-              fail()
-            } else {
-              state.isLoadingWeather = false
-              state.isErrorWeather = false
-              state.weather = json.consolidated_weather[0].weather_state_name
-              done(state.weather)
-            }
-          })
-        })
-    }
-  }
-})
-
-await store.loadWeather()
-
-store.weather => Sun, hopefully ;)
+render(<DisplayCount mapStore={mapStore} />, document.getElementById('root'))
 ```
 
 ## Nested Stores
 
-It's possible to split up sub-parts of the state into separate stores. To do
-this first declare a reference to the root store and pass it to each nested
-store.
+It's possible to split up sub-parts of the state into separate stores. The last
+call to create automatically denotes the root store that can be accessed from
+anywhere with get().
 
-```
-let store = () => store
+```js
+import { create, get } from 'linex'
 
-store = create({
+const store = create({
   state: {
     count: 0,
     nested: create({
       state: {
         count: 1
       }
-    }, store) // <- Reference the root store when creating a nested store.
+    })
   }
 })
 
-store.nested.count == 1
-```
-
-## Development
-
-```
-npm start # Run build in watch mode
-npm test # Run tests in watch mode
+store.nested.count // => 1
+get().nested.count // => 1
 ```

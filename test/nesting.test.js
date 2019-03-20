@@ -1,20 +1,22 @@
-import { create } from './..'
+import run from './utils/run'
 import { products, farm } from './stores'
 
-test('Methods on a nested store can be accessed.', () => {
-  const productsStore = create(products)
+run('Updates on a nested store can be accessed', (fallback, create) => {
+  const productsStore = create(products())
   const store = create(farm(productsStore))
 
+  expect(productsStore.items.length).toEqual(1)
   expect(store.products.items.length).toEqual(1)
 
   store.products.add('Banana')
 
+  expect(productsStore.items.length).toEqual(2)
   expect(store.products.items.length).toEqual(2)
 })
 
-test('Subscriptions to the rootStore will update when nested stores change.', () => {
+run('Subscriptions to the rootStore will update when nested stores change', (fallback, create) => {
   const subscribeMock = jest.fn()
-  const productsStore = create(products)
+  const productsStore = create(products())
   const store = create(farm(productsStore))
 
   store.subscribe(subscribeMock)
@@ -27,115 +29,135 @@ test('Subscriptions to the rootStore will update when nested stores change.', ()
 
   store.products.add('Carrot')
 
+  expect(subscribeMock.mock.calls.length).toBe(2)
+})
+
+run('Subscriptions to anotherStores have the same effect as ones to the root', (fallback, create) => {
+  const subscribeMock = jest.fn()
+  const productsStore = create(products())
+  const store = create(farm(productsStore))
+
+  productsStore.subscribe(subscribeMock)
+
+  expect(subscribeMock.mock.calls.length).toBe(0)
+
+  store.changeType('Vegetables')
+
   expect(subscribeMock.mock.calls.length).toBe(1)
+
+  store.products.add('Carrot')
+
+  expect(subscribeMock.mock.calls.length).toBe(2)
 })
 
-test('Nested stores have access to the rootStore.', () => {
-  // Declare a reference to the root store that can be passed to substores
-  // before the root is initialized.
-  let store = () => store
-
-  store = create({
+run('anotherStores can access their update methods', (fallback, create, get) => {
+  const store = create({
     state: {
-      count: 0,
+      count: 1,
+      secondCount: 2,
       nested: create({
         state: {
-          count: 1,
-          furtherNested: create({
-            state: {
-              count: 2
-            }
-          }, store)
+          count: 3,
+          secondCount: 4
+        },
+        update: {
+          incrementFirst: (state, store) => {
+            state.count++
+            store.incrementSecond()
+          },
+          incrementSecond: (state, store) => {
+            state.secondCount++
+          }
         }
-      }, store)
+      })
+    },
+    update: {
+      incrementFirst: (state, store) => {
+        ++state.count
+        store.incrementSecond()
+      },
+      incrementSecond: (state, store) => {
+        ++state.secondCount
+      }
     }
   })
 
-  expect(store.nested.root.count).toEqual(0)
-  expect(store.count).toEqual(0)
-  expect(store.nested.count).toEqual(1)
-  expect(store.nested.furtherNested.count).toEqual(2)
-  expect(store.nested.furtherNested.root.count).toEqual(0)
-})
-
-test('Methods have read access to the rootStore.', () => {
-  const mockMethod = jest.fn()
-
-  let store = () => store
-
-  store = create({
-    state: {
-      count: 1,
-      nested: create({
-        state: {
-          count: 2
-        },
-        methods: {
-          increment: (state, value, rootStore) => {
-            mockMethod(rootStore.count)
-          }
-        }
-      }, store)
-    },
-    fallback: true
-  })
-
-  store.nested.increment()
-  expect(mockMethod.mock.calls[0][0]).toEqual(1)
   expect(store.count).toEqual(1)
+  expect(store.nested.count).toEqual(3)
+
+  store.incrementFirst()
+
+  expect(store.count).toEqual(2)
+  expect(store.secondCount).toEqual(3)
+
+  store.nested.incrementFirst()
+
+  expect(store.count).toEqual(2)
+  expect(store.secondCount).toEqual(3)
+
+  expect(store.nested.count).toEqual(4)
+  expect(store.nested.secondCount).toEqual(5)
 })
 
-test('Setters to rootStore have no effect.', () => {
-  const mockMethod = jest.fn()
-
-  let store = () => store
-
-  store = create({
+run('anotherStores can access all other stores', (fallback, create, get) => {
+  const store = create({
     state: {
       count: 1,
-      nested: create({
+      first: create({
         state: {
           count: 2
         },
-        methods: {
-          increment: (state, value, rootStore) => {
-            rootStore.count = 5
+        update: {
+          incrementFirst: (state, store) => {
+            state.count++
+            get().increment()
+            get().second.incrementSecond()
           }
         }
-      }, store)
+      }),
+      second: create({
+        state: {
+          count: 3
+        },
+        update: {
+          incrementSecond: (state, store) => {
+            state.count++
+          }
+        }
+      }),
+    },
+    update: {
+      increment: (state, store) => {
+        state.count++
+      }
     }
   })
 
-  store.nested.increment()
   expect(store.count).toEqual(1)
+  expect(store.first.count).toEqual(2)
+  expect(store.second.count).toEqual(3)
+
+  store.first.incrementFirst()
+
+  expect(store.count).toEqual(2)
+  expect(store.first.count).toEqual(3)
+  expect(store.second.count).toEqual(4)
 })
 
-test('rootStore is frozen in fallback mode.', () => {
-  const mockShouldCatch = jest.fn()
+run('Doesn\'t report any not found paths when nesting stores', (fallback, create) => {
+  const subscribeMock = jest.fn()
+  const productsStore = create(products())
+  const store = create(farm(productsStore))
 
-  let store = () => store
+  store.subscribe(subscribeMock)
 
-  store = create({
-    state: {
-      count: 1,
-      nested: create({
-        state: {
-          count: 2
-        },
-        methods: {
-          increment: (state, value, rootStore) => {
-            try {
-              rootStore.count = 5
-            } catch(error) {
-              mockShouldCatch()
-            }
-          }
-        }
-      }, store)
-    },
-    fallback: true
-  })
+  expect(subscribeMock.mock.calls.length).toBe(0)
 
-  store.nested.increment()
-  expect(mockShouldCatch.mock.calls.length).toEqual(1)
+  store.changeType('Vegetables')
+
+  expect(subscribeMock.mock.calls.length).toBe(1)
+
+  store.products.add('Carrot')
+
+  expect(subscribeMock.mock.calls.length).toBe(2)
 })

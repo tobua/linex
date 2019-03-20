@@ -1,0 +1,16 @@
+{
+  "name": "linex-stores-demo-parcel",
+  "scripts": {
+    "start": "npm run link:src && parcel index.html",
+    "build": "npm run link:src && parcel build index.html",
+    "install:local": "npm install --no-save $(npm pack ../../../../fancy-proxy | tail -1) $(npm pack ../../.. | tail -1) $(npm pack ../.. | tail -1)",
+    "link:src": "ln -sf ../src"
+  },
+  "dependencies": {
+    "@babel/polyfill": "^7.2.5",
+    "parcel-bundler": "^1.12.2",
+    "linex": "^2.0.0",
+    "linex-stores": "^1.0.0",
+    "react-dom": "^16.8.4"
+  }
+}

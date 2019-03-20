@@ -1,9 +1,9 @@
-import { create } from './..'
+import run from './utils/run'
 import { products } from './stores'
 
-test('Can subscribe to a store and receive updates.', () => {
+run('Can subscribe to a store and receive updates', (fallback, create) => {
   const mockHandler = jest.fn()
-  const store = create(products)
+  const store = create(products())
 
   store.subscribe(mockHandler)
 

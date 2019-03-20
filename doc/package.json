@@ -1,0 +1,8 @@
+{
+  "name": "linex-docs",
+  "scripts": {
+    "start": "docy",
+    "develop": "docy --watch --open",
+    "build": "docy --build"
+  }
+}

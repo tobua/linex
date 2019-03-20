@@ -1,0 +1,15 @@
+{
+  "name": "linex-stores-demo-jetpack",
+  "scripts": {
+    "start": "npm run copy:src && jetpack",
+    "build": "npm run copy:src && jetpack build",
+    "copy:src": "cp -a ../src ."
+  },
+  "dependencies": {
+    "@babel/polyfill": "^7.2.5",
+    "jetpack": "^0.14.0",
+    "linex": "^2.0.0",
+    "linex-stores": "^1.0.0",
+    "react-dom": "^16.8.4"
+  }
+}

@@ -1,29 +1,29 @@
 import fetch from 'node-fetch'
-import { create } from './..'
+import React from 'react'
+import renderer from 'react-test-renderer'
+import { get, Component } from 'linex'
+import run from './utils/run'
 
-test('Store with all kinds of features for documentation.', async () => {
+run('Store with all kinds of features for documentation', async (fallback, create) => {
   const store = create({
     // Define the initial state.
     state: {
       count: 0
     },
-    // Methods are used to update the state.
-    methods: {
-      increment: (state, value) => {
-        state.count++
-      },
-      asyncIncrement: (state, value, rootState, delay) => {
-        setTimeout(() => {
-          delay((state, done, fail) => {
-            state.count = state.count + 5
-            done(state.count)
-          })
-        }, 1000)
+    // Used to update the state.
+    update: {
+      increment: state => ++state.count,
+      incrementBy: (state, store, value) => state.count += value,
+      incrementDelayed: (state, store) => {
+        return store.later((done) => {
+          setTimeout(() => done(store.increment()), 1000)
+        })
       }
     },
-    // Define selectors to get values derived from the state
-    selectors: {
-      double: [
+    // Methods to get values derived from the state.
+    read: {
+      double: state => state.count * 2,
+      doubleMemoized: [
         state => state.count,
         count => count * 2
       ]
@@ -32,50 +32,66 @@ test('Store with all kinds of features for documentation.', async () => {
 
   // State
   expect(store.count).toEqual(0)
-  // Method
-  store.increment()
+  // Update
+  expect(store.increment()).toEqual(1)
   expect(store.count).toEqual(1)
-  // Async Method
-  const { value } = await store.asyncIncrement()
-  expect(value).toEqual(6)
-  expect(store.count).toEqual(6)
-  // Selector
-  expect(store.double()).toEqual(12)
+  expect(store.incrementBy(2)).toEqual(3)
+  expect(store.count).toEqual(3)
+  // Read
+  expect(store.double()).toEqual(6)
+  expect(store.doubleMemoized()).toEqual(6)
+  // Async Update
+  const { value } = await store.incrementDelayed()
+  expect(value).toEqual(4)
+  expect(store.count).toEqual(4)
 })
 
-test('Async methods example works as expected', async () => {
+run('React integration simple case', (fallback, create) => {
   const store = create({
-    state: {
-      isLoadingTemperature: false,
-      isErrorTemperature: false,
-      weather: null
-    },
-    methods: {
-      loadWeather: (state, value, rootState, delay) => {
-        state.isLoadingTemperature = true
-
-        // Load weather data for Zurich, Switzerland.
-        fetch('https://www.metaweather.com/api/location/784794')
-          .then(res => res.json())
-          .then(json => {
-            delay((state, done, fail) => {
-              if (!json.consolidated_weather) {
-                state.isLoading = false
-                state.isError = true
-                fail()
-              } else {
-                state.isLoading = false
-                state.isError = false
-                state.weather = json.consolidated_weather[0].weather_state_name
-                done(state.weather)
-              }
-            })
-          })
-      }
+    state: { count: 0 },
+    update: {
+      increment: state => ++state.count
     }
   })
 
-  await store.loadWeather()
+  class DisplayCount extends Component {
+    render() {
+      const { count, increment } = this.state
 
-  expect(typeof store.weather).toEqual('string')
+      return (
+        <div>
+          <p>{count}</p>
+          <button onClick={() => increment()}>Increment</button>
+        </div>
+      )
+    }
+  }
+
+  const mapStore = store => ({ count: store.count, increment: store.increment })
+  const testRenderer = renderer.create(<DisplayCount mapStore={mapStore} />)
+  let json = testRenderer.toJSON()
+
+  expect(json.children[0].children[0]).toEqual('0')
+
+  testRenderer.root.findByType('button').props.onClick()
+
+  json = testRenderer.toJSON()
+
+  expect(json.children[0].children[0]).toEqual('1')
+})
+
+run('Nested store simple example', (fallback, create) => {
+  const store = create({
+    state: {
+      count: 0,
+      nested: create({
+        state: {
+          count: 1
+        }
+      })
+    }
+  })
+
+  expect(store.nested.count).toEqual(1)
+  expect(get().nested.count).toEqual(1)
 })

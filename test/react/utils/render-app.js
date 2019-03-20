@@ -3,11 +3,11 @@ import renderer from 'react-test-renderer'
 import App from './../components/App'
 
 /**
- * Renders an App with a store and the children.
+ * Renders an App wrapping the children.
  **/
-export default (store, children) => {
+export default children => {
   return renderer.create(
-    <App store={store}>
+    <App>
       {children}
     </App>
   )

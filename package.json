@@ -1,50 +1,66 @@
 {
   "name": "linex",
-  "version": "1.2.1",
+  "version": "2.0.0",
   "description": "Refined State Management.",
-  "main": "dist/linex.js",
+  "main": "build/linex.js",
+  "umd:main": "build/linex.umd.js",
+  "repository": "github:naminho/linex",
+  "author": "Matthias Giger",
+  "license": "MIT",
   "scripts": {
-    "start": "microbundle watch --no-compress --output dist --jsx React.createElement",
-    "build": "microbundle --output dist --jsx React.createElement",
-    "test": "jest --watchAll test/proxy.test.js"
+    "start": "microbundle watch --no-compress --output build --jsx React.createElement --format cjs,umd",
+    "build": "microbundle --output build --jsx React.createElement --format cjs,umd",
+    "doc": "docy --build",
+    "test": "jest --watchAll",
+    "coverage": "jest --coverage"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/naminho/linex.git"
+  "dependencies": {
+    "es6-promise": "^4.2.6",
+    "fancy-proxy": "0.1.0",
+    "immer": "^2.1.3",
+    "invariant": "^2.2.4",
+    "is-object": "^1.0.1",
+    "memoize-one": "^5.0.0",
+    "object-assign": "^4.1.1",
+    "prop-types": "^15.7.2",
+    "react": "^16.8.4",
+    "react-fast-compare": "^2.0.4",
+    "remove-array-item": "^1.1.1"
   },
+  "devDependencies": {
+    "@babel/preset-env": "^7.3.4",
+    "@babel/preset-react": "^7.0.0",
+    "babel-jest": "^24.5.0",
+    "babel-polyfill": "^6.26.0",
+    "docy": "^1.0.3",
+    "jest": "^24.5.0",
+    "react": "^16.8.4",
+    "microbundle": "^0.11.0",
+    "node-fetch": "^2.3.0",
+    "react-test-renderer": "^16.8.4"
+  },
+  "jest": {
+    "setupFiles": [
+      "<rootDir>/test/jest.init.js"
+    ],
+    "moduleNameMapper": {
+      "linex": "<rootDir>/src",
+      "fancy-proxy": "<rootDir>/../fancy-proxy/src"
+    },
+    "testPathIgnorePatterns": [
+      "/node_modules/",
+      "/stores/"
+    ]
+  },
+  "files": [
+    "build"
+  ],
   "keywords": [
-    "immer",
     "redux",
+    "immer",
+    "immutability",
     "simple",
     "state",
     "management"
-  ],
-  "author": "Matthias Giger",
-  "license": "MIT",
-  "dependencies": {
-    "babel-preset-env": "^1.7.0",
-    "babel-preset-react": "^6.24.1",
-    "es6-promise": "^4.2.5",
-    "immer": "^1.7.4",
-    "invariant": "^2.2.4",
-    "is-object": "^1.0.1",
-    "lodash.get": "^4.4.2",
-    "lodash.has": "^4.5.2",
-    "object-assign": "^4.1.1",
-    "proxy-polyfill": "^0.3.0",
-    "react-fast-compare": "^2.0.4",
-    "remove-array-item": "^1.1.1",
-    "reselect": "^4.0.0"
-  },
-  "peerDependencies": {
-    "react": "^16.6.1",
-    "react-dom": "^16.6.3"
-  },
-  "devDependencies": {
-    "babel-jest": "^23.6.0",
-    "jest": "^23.6.0",
-    "microbundle": "^0.7.0",
-    "node-fetch": "^2.3.0",
-    "react-test-renderer": "^16.7.0-alpha.2"
-  }
+  ]
 }

@@ -1,7 +1,6 @@
-import { create } from './..'
-import delay from './utils/async'
+import run from './utils/run'
 
-test('Can init an empty store.', () => {
+run('Can init an empty store', (fallback, create) => {
   const store = create({
     state: {}
   })
@@ -9,7 +8,7 @@ test('Can init an empty store.', () => {
   expect(store).toBeDefined()
 })
 
-test('Can read a property from the state.', () => {
+run('Can read a property from the state', (fallback, create) => {
   const store = create({
     state: {
       count: 6
@@ -19,7 +18,10 @@ test('Can read a property from the state.', () => {
   expect(store.count).toEqual(6)
 })
 
-test('State is immutable.', () => {
+run('State is immutable with proxies', (fallback, create) => {
+  const warnMock = jest.fn()
+  const consoleWarn = console.warn
+  console.warn = warnMock
   const store = create({
     state: {
       count: 6
@@ -28,10 +30,17 @@ test('State is immutable.', () => {
 
   store.count = 7
 
-  expect(store.count).toEqual(6)
+  expect(store.count).toEqual(fallback ? 7 : 6)
+
+  // Will trigger a warning that setters are not available on Proxies.
+  if (!fallback) {
+    expect(warnMock.mock.calls.length).toEqual(1)
+  }
+
+  console.warn = consoleWarn
 })
 
-test('Can access nested properties.', () => {
+run('Can access nested properties', (fallback, create) => {
   const store = create({
     state: {
       count: 6,
@@ -42,4 +51,29 @@ test('Can access nested properties.', () => {
   })
 
   expect(store.deep.count).toEqual(7)
+})
+
+run('Can access top-level state property', (fallback, create) => {
+  const store = create({
+    state: {
+      count: 5
+    }
+  })
+
+  expect(store.count).toEqual(5)
+})
+
+run('Can access top-level state array', (fallback, create) => {
+  const store = create({
+    state: {
+      products: [
+        'apple',
+        'banana',
+        'citrus'
+      ]
+    }
+  })
+
+  expect(store.products.length).toEqual(3)
+  expect(store.products[1]).toEqual('banana')
 })

@@ -1,0 +1,45 @@
+{
+  "name": "linex-stores",
+  "version": "1.0.0",
+  "description": "Ready-made stores for linex.",
+  "main": "build/linex-stores.js",
+  "umd:main": "build/linex-stores.umd.js",
+  "repository": "github:naminho/linex",
+  "author": "Matthias Giger",
+  "license": "MIT",
+  "scripts": {
+    "start": "microbundle watch --no-compress --output build --format cjs,umd --entry stores",
+    "build": "microbundle --output build --format cjs,umd --entry stores",
+    "test": "jest --watchAll",
+    "coverage": "jest --coverage"
+  },
+  "dependencies": {
+    "invariant": "^2.2.4"
+  },
+  "peerDependencies": {
+    "linex": "^2.0.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.3.4",
+    "@babel/preset-env": "^7.3.4",
+    "babel-jest": "^24.5.0",
+    "babel-plugin-dynamic-import-node": "^2.2.0",
+    "babel-polyfill": "^6.26.0",
+    "jest": "^24.5.0",
+    "linex": "file:..",
+    "microbundle": "^0.11.0"
+  },
+  "files": [
+    "build"
+  ],
+  "jest": {
+    "setupFiles": [
+      "<rootDir>/test/jest.init.js"
+    ],
+    "moduleNameMapper": {
+      "fancy-proxy": "<rootDir>/../../fancy-proxy/src",
+      "linex-stores": "<rootDir>/stores/",
+      "linex": "<rootDir>/../src"
+    }
+  }
+}

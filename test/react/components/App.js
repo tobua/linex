@@ -1,17 +1,14 @@
-import React from 'react'
-import { Provider } from './../../..'
+import React, { Component } from 'react'
 
-export default class App extends React.Component {
+export default class App extends Component {
   render() {
-    const { store, children } = this.props
+    const { children } = this.props
 
     return (
-      <Provider store={store}>
-        <div>
-          <h1>Linex App</h1>
-          {children}
-        </div>
-      </Provider>
+      <div>
+        <h1>Linex App</h1>
+        {children}
+      </div>
     )
   }
 }

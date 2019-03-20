@@ -1,12 +1,12 @@
-export default {
+export default () => ({
   state: {
     items: [
       'Apple'
     ]
   },
-  methods: {
-    add: (state, value) => {
+  update: {
+    add: (state, store, value) => {
       state.items.push(value)
     }
   }
-}
+})

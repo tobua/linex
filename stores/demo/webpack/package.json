@@ -1,0 +1,21 @@
+{
+  "name": "linex-stores-demo-webpack",
+  "scripts": {
+    "start": "npm run copy:src && webpack-dev-server",
+    "build": "npm run copy:src && webpack",
+    "copy:src": "cp -a ../src ."
+  },
+  "dependencies": {
+    "@babel/plugin-syntax-dynamic-import": "^7.2.0",
+    "@babel/polyfill": "^7.2.5",
+    "common-config-webpack-plugin": "^1.3.1",
+    "html-webpack-plugin": "^3.2.0",
+    "linex": "^2.0.0",
+    "linex-stores": "^1.0.0",
+    "react": "^16.8.4",
+    "react-dom": "^16.8.4",
+    "webpack": "^4.29.6",
+    "webpack-cli": "^3.3.0",
+    "webpack-dev-server": "^3.2.1"
+  }
+}

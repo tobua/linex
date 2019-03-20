@@ -4,8 +4,8 @@ export default productsStore => ({
     products: productsStore,
     type: 'Fruits'
   },
-  methods: {
-    changeType: (state, value) => {
+  update: {
+    changeType: (state, store, value) => {
       state.type = value
     }
   }

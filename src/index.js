@@ -1,36 +1,31 @@
-export { default as Provider } from './Provider'
-export { default as connect } from './connect'
-export { default as set } from './hooks/set'
+// Connects a change handler to the store.
+export { default as link } from './link'
+// Directly connects a React Component, when setting a mapStore prop.
+export { default as Component } from './react/Component'
+// Connects a Component by means of wrapping it in a HOC.
+export { default as connect } from './react/connect'
+// get() returns the root store, set(store) overrides the root store.
+export { get, set } from './utils/store'
+// options() can be used to set options, shared between all create() calls.
+export { default as options } from './utils/options'
+
+import { set } from './utils/store'
 import proxy from './proxy'
-import object from './object'
 import verify from './verify'
 import initialize from './initialize'
-import assign from './utils/assign'
 
+// create({ state, update, read }, options) initializes and returns a store.
+// The last call to create defines the root, accessible anywhere with get().
 export const create = (...args) => {
   const app = initialize(verify(args))
   const {
     state,      // Stores the current state.
-    methods,    // Used to make changes to the state.
-    hooks,      // Ready-made utilities that combine state and methods.
-    selectors,  // Derive values from the state, only recalculated on changes.
-    middleware, // Called when methods or hooks update the state.
-    root,       // Optional reference to the root store, if it's a nested store.
-    getState,   // Returns an up-to-date reference to the state.
-    getHooks,   // References the hook-state.
-    setState,   // Update the state, will inform subscribers.
-    setHooks,   // Same for hooks.
-    fallback,   // Should an object-fallback be used instead of a proxy (IE11).
-    store       // Exported reference, used to access functionalities above.
+    update,     // Used to make changes to the state.
+    read,       // Derive values from the state, optionally memoized.
+    plugin,     // Called when the state changes or the store is accessed.
+    options     // Options, including fallback for object in IE11.
   } = app
 
-  if (!app.fallback) {
-    // Use Proxy if available, possible setter support in the future.
-    app.store = proxy(app)
-  } else {
-    // Export regular object with the same API for IE11.
-    app.store = object(app)
-  }
-
-  return app.store
+  // Use Proxy if available, otherwise creates an object fallback.
+  return set(app.store = proxy(app))
 }

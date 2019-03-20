@@ -1,0 +1,10 @@
+*/dist
+!rollup/dist
+rollup/dist/index.js
+rollup/dist/chunk-*.js
+*/.cache
+*/src
+*/*.tgz
+*/build
+*/public
+!cra/public

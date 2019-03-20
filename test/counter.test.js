@@ -1,18 +1,20 @@
-import { create } from './..'
-import delay from './utils/async'
+import run from './utils/run'
 import { counter } from './stores'
 
-let store
-
-beforeAll(() => {
-  store = create(counter)
+beforeEach(() => {
+  // Hide plugin.
+  console.log = () => {}
 })
 
-test('Can init the counter store.', () => {
+run('Can init the counter store', (fallback, create) => {
+  const store = create(counter(create))
+
   expect(store).toBeDefined()
   expect(store.count).toEqual(0)
 })
 
-test('Can read the current count from the counter store.', () => {
+run('Can read the current count from the counter store', (fallback, create) => {
+  const store = create(counter(create))
+
   expect(store.count).toEqual(0)
 })

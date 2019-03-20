@@ -1,40 +1,11 @@
-import createSelectors from './utils/create-selectors'
+import read from './read'
+import setOptions from './utils/options'
 
-export default (app) => {
-  app.selectors = createSelectors(app.selectors, app.state)
-  app.subscribers = []
-
-  // Getters
-  app.getState = () => app.state
-  app.getHooks = () => app.hooks
-
-  // Setters
-  app.setState = newState => {
-    app.state = newState
-
-    if (app.fallback) {
-      assign(app.store, newState)
-    }
-
-    // Inform subscribers about the state change.
-    app.subscribers.forEach(subscriber => subscriber(app.store))
-  }
-
-  app.setHooks = newHooks => {
-    app.hooks = newHooks
-
-    if (app.fallback) {
-      assign(store, newHooks)
-    }
-
-    // Inform subscribers about the hooks state change.
-    app.subscribers.forEach(subscriber => subscriber(app.store))
-  }
-
-  // When no root available, reference self.
-  if (!app.root) {
-    app.root = () => app.store
-  }
+export default app => {
+  // Memoize reads.
+  read(app)
+  // Set global options, last call to create sets options.
+  setOptions(app.options)
 
   return app
 }
