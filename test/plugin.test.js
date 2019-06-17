@@ -11,19 +11,7 @@ run('Plugin isn\'t accessible on the store', (fallback, create) => {
     }
   })
 
-  // In non fallback mode an empty proxy is returned to avoid breaking errors
-  // when accessing nested properties.
-  expect(typeof store.log).toEqual(fallback ? 'undefined' : 'object')
-
-  if (!fallback) {
-    expect(typeof store.log.log).toEqual('object')
-    expect(typeof store.log.log.log).toEqual('object')
-  }
-
-  // A warning on the console should be thrown that the method doesn't exist.
-  if (!fallback) {
-    expect(global.console.warn).toHaveBeenCalled()
-  }
+  expect(typeof store.log).toEqual('undefined')
 })
 
 run('Plugin is called on update', (fallback, create) => {

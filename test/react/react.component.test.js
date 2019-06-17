@@ -1,4 +1,5 @@
 import React from 'react'
+import { model } from 'linex'
 import run from './../utils/run'
 import { counter } from './../stores'
 import createStatefulComponent from './components/StoreComponent'
@@ -13,7 +14,7 @@ beforeEach(() => {
 
 run('A StatefulComponent can be created', (fallback, create) => {
   // Init store.
-  const store = create(counter(create))
+  const store = create(counter(model))
   // Create StatefulComponent with renderMock inside.
   const StatefulComponent = createStatefulComponent()
   const renderMock = StatefulComponent.renderMock
@@ -41,7 +42,7 @@ run('A StatefulComponent can be created', (fallback, create) => {
 
 run('A StatefulComponent can also set the mapStore function internally', (fallback, create) => {
   // Init store.
-  const store = create(counter(create))
+  const store = create(counter(model))
 
   const mapStore = store => ({
     count: store.count,

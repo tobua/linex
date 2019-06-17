@@ -9,5 +9,6 @@ export default {
   fallbackBoolean: 'fallback options must be a boolean value.',
   laterCallback: 'later(method) expects a function as the first argument.',
   updateOnRead: key => `Linex Warning: The update key '${key}' is found on read as well. Make sure keys are unique.`,
-  keyOnState: key => `Linex Warning: The update/read key '${key}' is found on the state as well. Make sure keys are unique.`
+  keyOnState: key => `Linex Warning: The update/read key '${key}' is found on the state as well. Make sure keys are unique.`,
+  severalRoots: 'Several calls to create() made, there should only be one root store.'
 }

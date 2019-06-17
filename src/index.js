@@ -29,3 +29,9 @@ export const create = (...args) => {
   // Use Proxy if available, otherwise creates an object fallback.
   return set(app.store = proxy(app))
 }
+
+// Same as create, but will not set the store as root.
+export const model = (...args) => {
+  const app = initialize(verify(args))
+  return app.store = proxy(app)
+}

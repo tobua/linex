@@ -1,11 +1,11 @@
-export default create => ({
+export default model => ({
   state: {
     count: 0,
     secondCount: 0,
     deep: {
       count: 0
     },
-    anotherStore: create({
+    anotherStore: model({
       state: {
         count: 0
       },

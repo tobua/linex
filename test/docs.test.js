@@ -1,7 +1,7 @@
 import fetch from 'node-fetch'
 import React from 'react'
 import renderer from 'react-test-renderer'
-import { get, Component } from 'linex'
+import { get, Component, model } from 'linex'
 import run from './utils/run'
 
 run('Store with all kinds of features for documentation', async (fallback, create) => {
@@ -47,7 +47,7 @@ run('Store with all kinds of features for documentation', async (fallback, creat
 })
 
 run('React integration simple case', (fallback, create) => {
-  const store = create({
+  create({
     state: { count: 0 },
     update: {
       increment: state => ++state.count
@@ -84,7 +84,7 @@ run('Nested store simple example', (fallback, create) => {
   const store = create({
     state: {
       count: 0,
-      nested: create({
+      nested: model({
         state: {
           count: 1
         }

@@ -1,4 +1,4 @@
-import { create } from 'linex'
+import { model } from 'linex'
 
 export default (...args) => {
   let initial = []
@@ -15,7 +15,7 @@ export default (...args) => {
     initial = args
   }
 
-  return create({
+  return model({
     state: {
       value: initial
     },

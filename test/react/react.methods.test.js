@@ -1,4 +1,3 @@
-import React from 'react'
 import renderRegularComponent from './utils/render-regular-component'
 import getRenderProp from './utils/get-render-prop'
 

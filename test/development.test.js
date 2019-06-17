@@ -1,5 +1,4 @@
 import run from './utils/run'
-import { counter } from './stores'
 
 beforeEach(() => {
   process.env = Object.assign(process.env, { NODE_ENV: 'development' })
@@ -12,7 +11,7 @@ afterEach(() => {
 run('Warning for ambiguous keys in development', (fallback, create) => {
   global.console.warn = jest.fn()
 
-  const store = create({
+  create({
     state: {
       amibiguous: 0
     },
@@ -37,7 +36,7 @@ run('Warning for ambiguous keys in development', (fallback, create) => {
 run('Warning for ambiguous keys between update and read', (fallback, create) => {
   global.console.warn = jest.fn()
 
-  const store = create({
+  create({
     state: {
       unique: 0
     },
@@ -59,7 +58,7 @@ run('Warning for ambiguous keys between update and read', (fallback, create) => 
 run('Warning for ambiguous keys between update and read', (fallback, create) => {
   global.console.warn = jest.fn()
 
-  const store = create({
+  create({
     state: {
       unique: 0,
       amibiguousUpdate: 1,

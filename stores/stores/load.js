@@ -1,6 +1,6 @@
-import { create } from 'linex'
+import { model } from 'linex'
 
-export default (doImport) => create({
+export default (doImport) => model({
   state: {
     Component: null,
     loading: false,

@@ -1,3 +1,4 @@
+import { model } from 'linex'
 import run from './utils/run'
 import { products, farm } from './stores'
 
@@ -55,7 +56,7 @@ run('anotherStores can access their update methods', (fallback, create, get) => 
     state: {
       count: 1,
       secondCount: 2,
-      nested: create({
+      nested: model({
         state: {
           count: 3,
           secondCount: 4
@@ -103,7 +104,7 @@ run('anotherStores can access all other stores', (fallback, create, get) => {
   const store = create({
     state: {
       count: 1,
-      first: create({
+      first: model({
         state: {
           count: 2
         },
@@ -115,7 +116,7 @@ run('anotherStores can access all other stores', (fallback, create, get) => {
           }
         }
       }),
-      second: create({
+      second: model({
         state: {
           count: 3
         },

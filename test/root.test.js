@@ -1,11 +1,11 @@
+import { model } from 'linex'
 import run from './utils/run'
-import { products, farm } from './stores'
 
 run('The root store can be accessed with get()', (fallback, create, get) => {
   const store = create({
     state: {
       count: 0,
-      nested: create({
+      nested: model({
         state: {
           count: 1,
           furtherNested: create({
@@ -28,7 +28,7 @@ run('Updates have read access to the rootStore', (fallback, create, get) => {
   const store = create({
     state: {
       count: 1,
-      nested: create({
+      nested: model({
         state: {
           count: 2
         },

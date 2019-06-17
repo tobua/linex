@@ -1,7 +1,7 @@
-import { create } from 'linex'
+import { model } from 'linex'
 
 export default (initial, sync) => {
-  const store = create({
+  const store = model({
     state: {
       value: initial,
       synced: false,

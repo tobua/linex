@@ -1,4 +1,5 @@
 import removeArrayItem from 'remove-array-item'
+import invariants from './../constants/invariants'
 
 // Stores a reference to the root store.
 let root
@@ -17,4 +18,10 @@ export const notify = () => subscribers.forEach(subscriber => subscriber(root))
 export const get = () => root
 
 // Inject existing store.
-export const set = store => (root = store)
+export const set = store => {
+  if (process.env.NODE_ENV !== 'production' && root) {
+    console.warn(invariants.severalRoots)
+  }
+
+  return root = store
+}

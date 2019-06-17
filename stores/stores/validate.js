@@ -1,6 +1,6 @@
-import { create } from 'linex'
+import { model } from 'linex'
 
-export default (initial, valid, warning = () => false) => create({
+export default (initial, valid, warning = () => false) => model({
   state: {
     value: initial,
     valid: valid(initial),

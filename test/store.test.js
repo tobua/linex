@@ -14,7 +14,7 @@ run('Can init the counter store', (fallback, create) => {
 run('No warning for non-unique keys in production', (fallback, create) => {
   global.console.warn = jest.fn()
 
-  const store = create({
+  create({
     state: {
       amibiguous: 0
     },

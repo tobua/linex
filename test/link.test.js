@@ -1,3 +1,4 @@
+import { model } from 'linex'
 import run from './utils/run'
 import { counter } from './stores'
 
@@ -12,7 +13,7 @@ run('Linked callback is executed on state changes', (fallback, create, get, set,
     secondCount: store.secondCount
   })
   const mockChange = jest.fn()
-  const store = create(counter(create))
+  const store = create(counter(model))
 
   link(mapStore, mockChange)
 
@@ -29,7 +30,7 @@ run('Linked callback is not executed on non-mapped state changes', (fallback, cr
     secondCount: store.secondCount
   })
   const mockChange = jest.fn()
-  const store = create(counter(create))
+  const store = create(counter(model))
 
   link(mapStore, mockChange)
 
@@ -48,7 +49,7 @@ run('Can unsubscribe with return value', (fallback, create, get, set, link) => {
     secondCount: store.secondCount
   })
   const mockChange = jest.fn()
-  const store = create(counter(create))
+  const store = create(counter(model))
 
   const { unsubscribe } = link(mapStore, mockChange)
 
@@ -69,7 +70,7 @@ run('Returns correct initial mapped state', (fallback, create, get, set, link) =
     count: store.count,
     secondCount: store.secondCount
   })
-  const store = create(counter(create))
+  create(counter(model))
 
   const { state } = link(mapStore, () => {})
 
@@ -97,7 +98,7 @@ run('Warns if link happens before creating state', (fallback, create, get, set, 
 
   expect(linkResult).toBeUndefined()
 
-  const store = create(counter(create))
+  create(counter(model))
 
   expect(mockChange.mock.calls.length).toEqual(0)
 

@@ -1,5 +1,3 @@
-import React from 'react'
-import { set } from 'linex'
 import renderRegularComponent from './utils/render-regular-component'
 import getRenderProp from './utils/get-render-prop'
 
@@ -11,7 +9,7 @@ beforeEach(() => {
 })
 
 test('A component can be connected and will receive the props.', () => {
-  const { renderMock, store } = renderRegularComponent()
+  const { renderMock } = renderRegularComponent()
 
   expect(renderMock.mock.calls.length).toBe(1)
   expect(getRenderProp(renderMock, 0)).toBe(0)

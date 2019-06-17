@@ -1,4 +1,5 @@
 import React from 'react'
+import { model } from 'linex'
 import run from './../utils/run'
 import { counter } from './../stores'
 import createRegularComponent from './components/RegularComponent'
@@ -28,7 +29,7 @@ test('App with an empty store and a component will render the component once.', 
 })
 
 run('App with a store will render', (fallback, create) => {
-  const store = create(counter(create))
+  const store = create(counter(model))
 
   renderApp(<p>Hello</p>)
 })
