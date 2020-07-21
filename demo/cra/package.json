@@ -3,15 +3,16 @@
   "scripts": {
     "start": "npm run copy:src && react-scripts start",
     "build": "npm run copy:src && react-scripts build",
-    "copy:src": "cp -a ../src ."
+    "copy:src": "cp -a ../src .",
+    "local": "npm install --no-save $(npm pack ../.. | tail -1)"
   },
   "dependencies": {
-    "@babel/polyfill": "^7.4.0",
-    "linex": "^2.0.0",
-    "react-dom": "^16.8.4",
-    "react-scripts": "2.1.8",
-    "whatwg-fetch": "^3.0.0",
-    "wretch": "^1.5.1"
+    "@babel/polyfill": "^7.10.4",
+    "linex": "^2.0.1",
+    "react-dom": "^16.13.1",
+    "react-scripts": "3.4.1",
+    "whatwg-fetch": "^3.2.0",
+    "wretch": "^1.7.2"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -19,7 +20,8 @@
   "browserslist": [
     ">0.2%",
     "not dead",
-    "not ie <= 11",
+    "ie 11",
+    "not ie <= 10",
     "not op_mini all"
   ]
 }

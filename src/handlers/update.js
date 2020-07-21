@@ -1,7 +1,9 @@
-import produce from 'immer'
+import produce, { enableES5 } from 'immer'
 import assign from 'object-assign'
 import { notify } from './../utils/store'
 import { getOptions } from './../utils/options'
+
+enableES5()
 
 // Calls the upadte method with the store and the values.
 const callMethod = (app, state, method, inputs) => {

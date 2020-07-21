@@ -3,18 +3,15 @@
   "scripts": {
     "start": "npm run link:src && parcel index.html",
     "build": "npm run link:src && parcel build index.html",
-    "install:local": "npm install --no-save $(npm pack ../../../fancy-proxy | tail -1) $(npm pack ../.. | tail -1)",
+    "local": "npm install --no-save $(npm pack ../../../fancy-proxy | tail -1) $(npm pack ../.. | tail -1)",
     "link:src": "ln -sf ../src"
   },
   "dependencies": {
-    "@babel/polyfill": "^7.4.0",
-    "parcel-bundler": "^1.12.2",
-    "linex": "^2.0.0",
-    "react-dom": "^16.8.4",
-    "whatwg-fetch": "^3.0.0",
-    "wretch": "^1.5.1"
-  },
-  "alias": {
-    "immer": "./node_modules/immer/dist/immer.js"
+    "@babel/polyfill": "^7.10.4",
+    "parcel-bundler": "^1.12.4",
+    "linex": "^2.0.1",
+    "react-dom": "^16.13.1",
+    "whatwg-fetch": "^3.2.0",
+    "wretch": "^1.7.2"
   }
 }

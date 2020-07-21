@@ -3,12 +3,13 @@
   "scripts": {
     "start": "npm run copy:src && jetpack",
     "build": "npm run copy:src && jetpack build",
-    "copy:src": "cp -a ../src ."
+    "copy:src": "cp -a ../src .",
+    "local": "npm install --no-save $(npm pack ../.. | tail -1)"
   },
   "dependencies": {
     "@babel/polyfill": "^7.4.0",
     "jetpack": "^0.14.0",
-    "linex": "^2.0.0",
+    "linex": "^2.0.1",
     "react-dom": "^16.8.4",
     "whatwg-fetch": "^3.0.0",
     "wretch": "^1.5.1"

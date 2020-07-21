@@ -14,7 +14,7 @@ export const store = create({
       state.isLoading = true
       store.later((done, fail) => {
         // Load random design quote.
-        wretch('http://quotesondesign.com/wp-json/posts')
+        wretch('https://quotesondesign.com/wp-json/wp/v2/posts/?orderby=rand&per_page=1&page=1')
         .options({ mode: 'cors' })
         .get()
         .json(json => {
@@ -31,8 +31,8 @@ export const store = create({
         state.isLoading = false
         state.isError = false
         state.data = {
-          quote: json[0].content,
-          author: json[0].title
+          quote: json[0].content.rendered,
+          author: json[0].title.rendered
         }
       }
     }
