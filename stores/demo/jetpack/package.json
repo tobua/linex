@@ -8,8 +8,8 @@
   "dependencies": {
     "@babel/polyfill": "^7.2.5",
     "jetpack": "^0.14.0",
-    "linex": "^2.0.0",
-    "linex-stores": "^1.0.0",
+    "linex": "^2.0.1",
+    "linex-stores": "^1.0.1",
     "react-dom": "^16.8.4"
   }
 }

@@ -1,6 +1,6 @@
 {
   "name": "linex-stores",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Ready-made stores for linex.",
   "main": "build/linex-stores.js",
   "umd:main": "build/linex-stores.umd.js",
@@ -8,8 +8,8 @@
   "author": "Matthias Giger",
   "license": "MIT",
   "scripts": {
-    "start": "microbundle watch --no-compress --output build --format cjs,umd --entry stores",
-    "build": "microbundle --output build --format cjs,umd --entry stores",
+    "start": "microbundle watch --no-compress --format cjs,umd --entry stores",
+    "build": "microbundle --format cjs,umd --entry stores",
     "test": "jest --watchAll",
     "coverage": "jest --coverage"
   },
@@ -20,14 +20,14 @@
     "linex": "^2.0.0"
   },
   "devDependencies": {
-    "@babel/core": "^7.3.4",
-    "@babel/preset-env": "^7.3.4",
-    "babel-jest": "^24.5.0",
-    "babel-plugin-dynamic-import-node": "^2.2.0",
+    "@babel/core": "^7.10.5",
+    "@babel/preset-env": "^7.10.4",
+    "babel-jest": "^26.1.0",
+    "babel-plugin-dynamic-import-node": "^2.3.3",
     "babel-polyfill": "^6.26.0",
-    "jest": "^24.5.0",
+    "jest": "^26.1.0",
     "linex": "file:..",
-    "microbundle": "^0.11.0"
+    "microbundle": "^0.12.3"
   },
   "files": [
     "build"
